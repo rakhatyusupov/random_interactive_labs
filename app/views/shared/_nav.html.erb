@@ -13,16 +13,26 @@
       <%= link_to "Коллекции", collections_path, class: "text-gray-800 hover:text-gray-600 transition-colors font-medium" %>
       <%= link_to "О проекте", "#", class: "text-gray-800 hover:text-gray-600 transition-colors font-medium" %>
       <%= link_to "Ресурсы", "#", class: "text-gray-800 hover:text-gray-600 transition-colors font-medium" %>
+      
+      <% if user_signed_in? && current_user.admin? %>
+        <%= link_to "Admin", admin_root_path, class: "text-red-600 hover:text-red-700 transition-colors font-medium" %>
+      <% end %>
     </div>
 
     <!-- Auth Section -->
     <div class="flex items-center gap-4">
       <% if user_signed_in? %>
-        <%= link_to profile_path(current_user.username), class: "text-gray-800 hover:text-gray-600 transition-colors" do %>
-          <i class="ri-user-line text-xl"></i>
+        <%= link_to new_article_path, class: "text-gray-800 hover:text-gray-600 transition-colors font-medium flex items-center gap-1" do %>
+          <i class="ri-article-line"></i>
+          <span>Новая статья</span>
         <% end %>
-        <%= button_to destroy_user_session_path, method: :delete, class: "bg-gray-900 text-white px-4 py-2 border border-gray-800 rounded-none hover:bg-gray-700 transition-colors text-sm font-medium" do %>
-          Выйти
+        <%= link_to new_collection_path, class: "text-gray-800 hover:text-gray-600 transition-colors font-medium flex items-center gap-1" do %>
+          <i class="ri-folder-add-line"></i>
+          <span>Новая коллекция</span>
+        <% end %>
+        <%= link_to profile_path(current_user.username), class: "bg-gray-900 text-white px-4 py-2 border border-gray-800 rounded-none hover:bg-gray-700 transition-colors text-sm font-medium flex items-center gap-2" do %>
+          <i class="ri-user-line"></i>
+          <span>@<%= current_user.username %></span>
         <% end %>
       <% else %>
         <%= link_to "Войти", new_user_session_path, class: "text-gray-800 hover:text-gray-600 transition-colors font-medium" %>
