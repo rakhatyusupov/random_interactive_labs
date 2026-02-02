@@ -4,8 +4,97 @@ import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
   static targets = ["container"];
   static values = {
-    mode: { type: String, default: "list" },
-  };
+    mode: { type: String, default: "grid" }
+  }
+
+  connect() {
+    this.updateLayout()
+  }
+
+  toggleGrid() {
+    this.modeValue = "grid"
+    this.updateLayout()
+  }
+
+  toggleList() {
+    this.modeValue = "list"
+    this.updateLayout()
+  }
+
+  updateLayout() {
+    const container = this.containerTarget
+    const items = container.querySelectorAll('[data-grid-item]')
+    
+    if (this.modeValue === "grid") {
+      // Grid layout - 8 columns
+      container.classList.remove('flex', 'flex-col', 'gap-4')
+      container.classList.add('grid', 'grid-cols-8', 'gap-4')
+      
+      items.forEach(item => {
+        item.classList.remove('col-span-8')
+        const span = item.dataset.span || '1'
+        item.classList.add(`col-span-${span}`)
+        
+        // Show card style
+        const imageContainer = item.querySelector('div:first-child')
+        if (imageContainer) {
+          const image = imageContainer.querySelector('img, div.bg-gray-300')
+          if (image) {
+            image.classList.remove('h-48')
+            image.classList.add('h-64')
+          }
+        }
+      })
+      
+      // Update button states
+      this.updateButtonStates('grid')
+    } else {
+      // List layout
+      container.classList.remove('grid', 'grid-cols-8')
+      container.classList.add('flex', 'flex-col', 'gap-4')
+      
+      items.forEach(item => {
+        // Remove all span classes
+        for (let i = 1; i <= 8; i++) {
+          item.classList.remove(`col-span-${i}`)
+        }
+        item.classList.add('col-span-8')
+        
+        // List style
+        const imageContainer = item.querySelector('div:first-child')
+        if (imageContainer) {
+          const image = imageContainer.querySelector('img, div.bg-gray-300')
+          if (image) {
+            image.classList.remove('h-64')
+            image.classList.add('h-48')
+          }
+        }
+      })
+      
+      // Update button states
+      this.updateButtonStates('list')
+    }
+  }
+
+  updateButtonStates(activeMode) {
+    const gridBtn = document.querySelector('[data-layout-btn="grid"]')
+    const listBtn = document.querySelector('[data-layout-btn="list"]')
+    
+    if (gridBtn && listBtn) {
+      if (activeMode === 'grid') {
+        gridBtn.classList.add('bg-gray-900', 'text-white')
+        gridBtn.classList.remove('bg-white', 'text-gray-800')
+        listBtn.classList.remove('bg-gray-900', 'text-white')
+        listBtn.classList.add('bg-white', 'text-gray-800')
+      } else {
+        listBtn.classList.add('bg-gray-900', 'text-white')
+        listBtn.classList.remove('bg-white', 'text-gray-800')
+        gridBtn.classList.remove('bg-gray-900', 'text-white')
+        gridBtn.classList.add('bg-white', 'text-gray-800')
+      }
+    }
+  }
+}
 
   connect() {
     this.updateLayout();
