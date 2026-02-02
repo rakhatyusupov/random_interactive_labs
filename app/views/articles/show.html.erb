@@ -1,0 +1,48 @@
+<article style="max-width: 800px; margin: 0 auto;">
+  <% if @article.cover_image.attached? %>
+    <%= image_tag @article.cover_image.variant(resize_to_limit: [800, 600]), style: "width: 100%; border-radius: 8px; margin-bottom: 2rem;" %>
+  <% end %>
+
+  <h1 style="margin-bottom: 1rem;"><%= @article.title %></h1>
+
+  <div style="color: #666; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #eee;">
+    <p style="margin-bottom: 0.5rem;">
+      by <%= link_to "@#{@article.user.username}", profile_path(@article.user.username) %>
+      <% if @article.published_at %>
+        • Published <%= @article.published_at.strftime("%B %d, %Y") %>
+      <% end %>
+    </p>
+    
+    <% if @article.tags.any? %>
+      <div style="margin-top: 0.5rem;">
+        <% @article.tags.each do |tag| %>
+          <span style="display: inline-block; background: #e9ecef; padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.9rem; margin-right: 0.5rem;">
+            <%= tag.name %>
+          </span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div style="line-height: 1.6; font-size: 1.1rem;">
+    <%= @article.body %>
+  </div>
+
+  <% if user_signed_in? %>
+    <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #eee;">
+      <% if @article.user == current_user || current_user.admin? %>
+        <%= link_to "Edit", edit_article_path(@article), style: "padding: 0.5rem 1rem; background: #007bff; color: white; text-decoration: none; border-radius: 4px; margin-right: 0.5rem;" %>
+        
+        <% if @article.draft? && @article.user == current_user %>
+          <%= button_to "Submit for Review", submit_article_path(@article), method: :post, style: "display: inline; margin-right: 0.5rem;", form: { style: "display: inline;" } %>
+        <% end %>
+        
+        <%= button_to "Delete", @article, method: :delete, data: { turbo_confirm: "Are you sure?" }, style: "display: inline;", form: { style: "display: inline;" } %>
+      <% end %>
+      
+      <span style="margin-left: 1rem; color: #666;">
+        Status: <strong><%= @article.status.titleize %></strong>
+      </span>
+    </div>
+  <% end %>
+</article>

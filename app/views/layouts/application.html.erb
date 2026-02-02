@@ -24,6 +24,39 @@
   </head>
 
   <body>
-    <%= yield %>
+    <header>
+      <nav style="padding: 1rem; background: #f5f5f5; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <%= link_to "Layer Zero", root_path, style: "font-weight: bold; text-decoration: none; font-size: 1.2rem;" %>
+          <%= link_to "Articles", articles_path, style: "margin-left: 1rem;" %>
+          <%= link_to "Collections", collections_path, style: "margin-left: 1rem;" %>
+          <% if user_signed_in? && current_user.admin? %>
+            <%= link_to "Admin", admin_root_path, style: "margin-left: 1rem; color: red;" %>
+          <% end %>
+        </div>
+        <div>
+          <% if user_signed_in? %>
+            <%= link_to "New Article", new_article_path, style: "margin-right: 1rem;" %>
+            <%= link_to "New Collection", new_collection_path, style: "margin-right: 1rem;" %>
+            <%= link_to "@#{current_user.username}", profile_path(current_user.username), style: "margin-right: 1rem;" %>
+            <%= button_to "Sign Out", destroy_user_session_path, method: :delete, style: "display: inline;" %>
+          <% else %>
+            <%= link_to "Sign In", new_user_session_path, style: "margin-right: 1rem;" %>
+            <%= link_to "Sign Up", new_user_registration_path %>
+          <% end %>
+        </div>
+      </nav>
+    </header>
+
+    <main style="padding: 2rem;">
+      <% if notice.present? %>
+        <p style="color: green; padding: 0.5rem; background: #d4edda; border-radius: 4px; margin-bottom: 1rem;"><%= notice %></p>
+      <% end %>
+      <% if alert.present? %>
+        <p style="color: red; padding: 0.5rem; background: #f8d7da; border-radius: 4px; margin-bottom: 1rem;"><%= alert %></p>
+      <% end %>
+
+      <%= yield %>
+    </main>
   </body>
 </html>

@@ -1,0 +1,89 @@
+<h1>Admin: Article Management</h1>
+
+<section style="margin-bottom: 3rem;">
+  <h2 style="background: #fff3cd; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+    ⚠️ Pending Review (<%= @pending_articles.count %>)
+  </h2>
+  
+  <% if @pending_articles.any? %>
+    <table style="width: 100%; border-collapse: collapse;">
+      <thead>
+        <tr style="background: #f8f9fa; border-bottom: 2px solid #dee2e6;">
+          <th style="padding: 1rem; text-align: left;">Title</th>
+          <th style="padding: 1rem; text-align: left;">Author</th>
+          <th style="padding: 1rem; text-align: left;">Submitted</th>
+          <th style="padding: 1rem; text-align: left;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @pending_articles.each do |article| %>
+          <tr style="border-bottom: 1px solid #dee2e6;">
+            <td style="padding: 1rem;">
+              <%= link_to article.title, article, target: "_blank", style: "color: #007bff; text-decoration: none;" %>
+            </td>
+            <td style="padding: 1rem;">
+              <%= link_to "@#{article.user.username}", profile_path(article.user.username), style: "color: #007bff; text-decoration: none;" %>
+            </td>
+            <td style="padding: 1rem; color: #666;">
+              <%= article.created_at.strftime("%Y-%m-%d %H:%M") %>
+            </td>
+            <td style="padding: 1rem;">
+              <%= button_to "Approve & Publish", approve_admin_article_path(article), method: :post, style: "padding: 0.5rem 1rem; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 0.5rem;", form: { style: "display: inline;" } %>
+              <%= link_to "Edit", edit_admin_article_path(article), style: "padding: 0.5rem 1rem; background: #007bff; color: white; text-decoration: none; border-radius: 4px;" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p style="text-align: center; color: #666; padding: 2rem; background: #f8f9fa; border-radius: 4px;">No articles pending review.</p>
+  <% end %>
+</section>
+
+<section>
+  <h2 style="margin-bottom: 1rem;">All Articles</h2>
+  
+  <table style="width: 100%; border-collapse: collapse;">
+    <thead>
+      <tr style="background: #f8f9fa; border-bottom: 2px solid #dee2e6;">
+        <th style="padding: 1rem; text-align: left;">Title</th>
+        <th style="padding: 1rem; text-align: left;">Author</th>
+        <th style="padding: 1rem; text-align: left;">Status</th>
+        <th style="padding: 1rem; text-align: left;">Published</th>
+        <th style="padding: 1rem; text-align: left;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @articles.each do |article| %>
+        <tr style="border-bottom: 1px solid #dee2e6;">
+          <td style="padding: 1rem;">
+            <%= link_to article.title, article, target: "_blank", style: "color: #007bff; text-decoration: none;" %>
+          </td>
+          <td style="padding: 1rem;">
+            <%= link_to "@#{article.user.username}", profile_path(article.user.username), style: "color: #007bff; text-decoration: none;" %>
+          </td>
+          <td style="padding: 1rem;">
+            <% if article.draft? %>
+              <span style="background: #6c757d; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem;">Draft</span>
+            <% elsif article.submitted? %>
+              <span style="background: #ffc107; color: black; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem;">Submitted</span>
+            <% elsif article.published? %>
+              <span style="background: #28a745; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem;">Published</span>
+            <% end %>
+          </td>
+          <td style="padding: 1rem; color: #666;">
+            <%= article.published_at&.strftime("%Y-%m-%d") || "-" %>
+          </td>
+          <td style="padding: 1rem;">
+            <% if article.published? %>
+              <%= button_to "Unpublish", unpublish_admin_article_path(article), method: :post, style: "padding: 0.5rem 1rem; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 0.5rem; font-size: 0.85rem;", form: { style: "display: inline;" } %>
+            <% else %>
+              <%= button_to "Publish", publish_admin_article_path(article), method: :post, style: "padding: 0.5rem 1rem; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 0.5rem; font-size: 0.85rem;", form: { style: "display: inline;" } %>
+            <% end %>
+            <%= link_to "Edit", edit_admin_article_path(article), style: "padding: 0.5rem 1rem; background: #007bff; color: white; text-decoration: none; border-radius: 4px; font-size: 0.85rem;" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>

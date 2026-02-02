@@ -1,0 +1,139 @@
+<div style="max-width: 1200px; margin: 0 auto;">
+  <header style="padding: 3rem; background: #f8f9fa; border-radius: 8px; margin-bottom: 3rem;">
+    <div style="display: flex; gap: 2rem; align-items: start;">
+      <div>
+        <% if @user.avatar.attached? %>
+          <%= image_tag @user.avatar.variant(resize_to_fill: [150, 150]), style: "width: 150px; height: 150px; border-radius: 50%; object-fit: cover;" %>
+        <% else %>
+          <div style="width: 150px; height: 150px; border-radius: 50%; background: #dee2e6; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: #6c757d;">
+            <%= @user.username[0].upcase %>
+          </div>
+        <% end %>
+      </div>
+      
+      <div style="flex: 1;">
+        <h1 style="margin: 0 0 0.5rem 0;">@<%= @user.username %></h1>
+        
+        <% if @user.position.present? || @user.company.present? %>
+          <p style="color: #666; margin-bottom: 1rem;">
+            <% if @user.position.present? %><%= @user.position %><% end %>
+            <% if @user.position.present? && @user.company.present? %> at <% end %>
+            <% if @user.company.present? %><strong><%= @user.company %></strong><% end %>
+          </p>
+        <% end %>
+        
+        <% if @user.bio.present? %>
+          <p style="margin-bottom: 1rem; line-height: 1.6;"><%= @user.bio %></p>
+        <% end %>
+        
+        <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
+          <% if @user.website.present? %>
+            <a href="<%= @user.website %>" target="_blank" style="color: #007bff; text-decoration: none;">🌐 Website</a>
+          <% end %>
+          <% if @user.twitter.present? %>
+            <a href="https://twitter.com/<%= @user.twitter %>" target="_blank" style="color: #007bff; text-decoration: none;">🐦 Twitter</a>
+          <% end %>
+          <% if @user.linkedin.present? %>
+            <a href="https://linkedin.com/in/<%= @user.linkedin %>" target="_blank" style="color: #007bff; text-decoration: none;">💼 LinkedIn</a>
+          <% end %>
+          <% if @user.github.present? %>
+            <a href="https://github.com/<%= @user.github %>" target="_blank" style="color: #007bff; text-decoration: none;">💻 GitHub</a>
+          <% end %>
+          <% if @user.instagram.present? %>
+            <a href="https://instagram.com/<%= @user.instagram %>" target="_blank" style="color: #007bff; text-decoration: none;">📸 Instagram</a>
+          <% end %>
+        </div>
+        
+        <div style="margin-top: 1.5rem; display: flex; gap: 2rem; color: #666;">
+          <span><strong><%= @followers.count %></strong> Followers</span>
+          <span><strong><%= @following.count %></strong> Following</span>
+          <span>Joined <%= @user.created_at.strftime("%B %Y") %></span>
+        </div>
+        
+        <% if user_signed_in? && current_user != @user %>
+          <div style="margin-top: 1.5rem;">
+            <% if current_user.following?(@user) %>
+              <%= button_to "Unfollow", unfollow_profile_path(@user.username), method: :delete, style: "padding: 0.75rem 2rem; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem;" %>
+            <% else %>
+              <%= button_to "Follow", follow_profile_path(@user.username), method: :post, style: "padding: 0.75rem 2rem; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem;" %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </header>
+
+  <section style="margin-bottom: 4rem;">
+    <h2 style="margin-bottom: 1.5rem;">Articles (<%= @articles.count %>)</h2>
+    
+    <% if @articles.any? %>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+        <% @articles.each do |article| %>
+          <article style="border: 1px solid #ddd; padding: 1rem; border-radius: 8px;">
+            <% if article.cover_image.attached? %>
+              <%= image_tag article.cover_image.variant(resize_to_limit: [400, 300]), style: "width: 100%; height: 200px; object-fit: cover; border-radius: 4px; margin-bottom: 1rem;" %>
+            <% end %>
+            
+            <h3 style="margin: 0 0 0.5rem 0;">
+              <%= link_to article.title, article, style: "text-decoration: none; color: #333;" %>
+            </h3>
+            
+            <p style="color: #666; font-size: 0.9rem;">
+              <%= article.published_at&.strftime("%B %d, %Y") %>
+            </p>
+            
+            <% if article.tags.any? %>
+              <div style="margin-top: 0.5rem;">
+                <% article.tags.first(3).each do |tag| %>
+                  <span style="display: inline-block; background: #e9ecef; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-right: 0.5rem;">
+                    <%= tag.name %>
+                  </span>
+                <% end %>
+              </div>
+            <% end %>
+          </article>
+        <% end %>
+      </div>
+    <% else %>
+      <p style="color: #666; text-align: center; padding: 2rem;">No published articles yet.</p>
+    <% end %>
+  </section>
+
+  <section>
+    <h2 style="margin-bottom: 1.5rem;">Collections (<%= @collections.count %>)</h2>
+    
+    <% if @collections.any? %>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+        <% @collections.each do |collection| %>
+          <article style="border: 1px solid #ddd; padding: 1rem; border-radius: 8px;">
+            <h3 style="margin: 0 0 0.5rem 0;">
+              <%= link_to collection.title, collection, style: "text-decoration: none; color: #333;" %>
+            </h3>
+            
+            <% if collection.description.present? %>
+              <p style="color: #666; font-size: 0.9rem; margin-bottom: 0.5rem;">
+                <%= truncate(collection.description, length: 100) %>
+              </p>
+            <% end %>
+            
+            <p style="color: #999; font-size: 0.85rem;">
+              <%= collection.collection_items.count %> items
+            </p>
+            
+            <% if collection.tags.any? %>
+              <div style="margin-top: 0.5rem;">
+                <% collection.tags.first(3).each do |tag| %>
+                  <span style="display: inline-block; background: #e9ecef; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-right: 0.5rem;">
+                    <%= tag.name %>
+                  </span>
+                <% end %>
+              </div>
+            <% end %>
+          </article>
+        <% end %>
+      </div>
+    <% else %>
+      <p style="color: #666; text-align: center; padding: 2rem;">No collections yet.</p>
+    <% end %>
+  </section>
+</div>

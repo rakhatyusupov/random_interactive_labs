@@ -1,0 +1,43 @@
+<%= form_with(model: collection, local: true) do |form| %>
+  <% if collection.errors.any? %>
+    <div style="color: red; background: #f8d7da; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+      <h2><%= pluralize(collection.errors.count, "error") %> prohibited this collection from being saved:</h2>
+      <ul>
+        <% collection.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div style="margin-bottom: 1rem;">
+    <%= form.label :title, style: "display: block; font-weight: bold; margin-bottom: 0.5rem;" %>
+    <%= form.text_field :title, style: "width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;" %>
+  </div>
+
+  <div style="margin-bottom: 1rem;">
+    <%= form.label :description, style: "display: block; font-weight: bold; margin-bottom: 0.5rem;" %>
+    <%= form.text_area :description, rows: 4, style: "width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;" %>
+  </div>
+
+  <div style="margin-bottom: 1rem;">
+    <%= form.label :cover_image, "Cover Image", style: "display: block; font-weight: bold; margin-bottom: 0.5rem;" %>
+    <%= form.file_field :cover_image, accept: "image/*", style: "width: 100%;" %>
+    <% if collection.cover_image.attached? %>
+      <div style="margin-top: 0.5rem;">
+        <%= image_tag collection.cover_image.variant(resize_to_limit: [400, 300]), style: "max-width: 400px; border-radius: 4px;" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div style="margin-bottom: 1rem;">
+    <%= form.label :tag_names, "Tags (comma-separated)", style: "display: block; font-weight: bold; margin-bottom: 0.5rem;" %>
+    <%= form.text_field :tag_names, value: collection.tag_names.join(", "), style: "width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;" %>
+    <small style="color: #666;">Example: design, inspiration, resources</small>
+  </div>
+
+  <div style="margin-top: 2rem;">
+    <%= form.submit "Save Collection", style: "padding: 0.75rem 2rem; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem;" %>
+    <%= link_to "Cancel", collections_path, style: "margin-left: 1rem; padding: 0.75rem 2rem; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; display: inline-block;" %>
+  </div>
+<% end %>

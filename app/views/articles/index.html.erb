@@ -1,0 +1,34 @@
+<h1>Articles</h1>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+  <% @articles.each do |article| %>
+    <article style="border: 1px solid #ddd; padding: 1rem; border-radius: 8px;">
+      <% if article.cover_image.attached? %>
+        <%= image_tag article.cover_image.variant(resize_to_limit: [400, 300]), style: "width: 100%; height: 200px; object-fit: cover; border-radius: 4px; margin-bottom: 1rem;" %>
+      <% end %>
+      
+      <h2 style="margin: 0 0 0.5rem 0;">
+        <%= link_to article.title, article, style: "text-decoration: none; color: #333;" %>
+      </h2>
+      
+      <p style="color: #666; font-size: 0.9rem; margin-bottom: 0.5rem;">
+        by <%= link_to "@#{article.user.username}", profile_path(article.user.username) %>
+        • <%= article.published_at&.strftime("%B %d, %Y") %>
+      </p>
+      
+      <% if article.tags.any? %>
+        <div style="margin-top: 0.5rem;">
+          <% article.tags.each do |tag| %>
+            <span style="display: inline-block; background: #e9ecef; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-right: 0.5rem;">
+              <%= tag.name %>
+            </span>
+          <% end %>
+        </div>
+      <% end %>
+    </article>
+  <% end %>
+</div>
+
+<% if @articles.empty? %>
+  <p style="text-align: center; color: #666; margin-top: 3rem;">No articles published yet.</p>
+<% end %>
