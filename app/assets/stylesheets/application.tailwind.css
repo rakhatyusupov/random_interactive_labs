@@ -50,3 +50,9 @@ body {
   font-family: "Graphik LCG", system-ui, sans-serif;
   font-weight: 300;
 }
+
+section,
+nav,
+footer {
+  border: 1px solid #292929;
+}

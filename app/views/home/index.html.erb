@@ -2,8 +2,8 @@
 
 <main class="bg-gray-100 min-h-screen">
   <!-- Header Controls -->
-  <section class="bg-gray-200 border-b border-gray-800 p-4">
-    <div class="max-w-screen-2xl mx-auto flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
+  <section class="bg-gray-200 border-b border-gray-800 p-2">
+    <div class="max-w-screen-2xl mx-auto flex flex-col md:flex-row gap-2 md:items-center md:justify-between">
       <!-- Search Bar -->
       <div class="flex-1 max-w-2xl">
         <div class="relative">
@@ -47,13 +47,13 @@
   </section>
 
   <!-- Cases Section -->
-  <section class="p-4" data-controller="layout">
+  <section class="p-2" data-controller="layout">
     <div class="max-w-screen-2xl mx-auto">
       <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6" style="font-family: 'Gridlite PE', monospace;">
         RANDOM_RESEARCH_STUDY
       </h2>
 
-      <div class="flex flex-col gap-4" data-layout-target="container">
+      <div class="flex flex-col gap-2" data-layout-target="container">
         <% @cases.each do |article| %>
           <%= render "shared/case_card", article: article, mode: :list %>
         <% end %>
@@ -81,13 +81,13 @@
   </section>
 
   <!-- Articles Section -->
-  <section class="p-4 bg-gray-200 border-y border-gray-800" data-controller="article-preview">
+  <section class="p-2 bg-gray-200 border-y border-gray-800" data-controller="article-preview">
     <div class="max-w-screen-2xl mx-auto">
       <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6" style="font-family: 'Gridlite PE', monospace;">
         Статьи
       </h2>
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-2">
         <!-- Article List (Left) -->
         <div class="lg:col-span-1 flex flex-col gap-0 border border-gray-800 bg-white overflow-hidden">
           <% @articles.each_with_index do |article, index| %>
@@ -121,7 +121,7 @@
           </p>
 
           <!-- Preview Metadata -->
-          <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600 border-t border-gray-300 pt-4 mb-6" data-article-preview-target="metadata">
+          <div class="flex flex-wrap items-center gap-2 text-sm text-gray-600 border-t border-gray-300 pt-4 mb-6" data-article-preview-target="metadata">
             <!-- Metadata will be injected here -->
           </div>
 
@@ -139,13 +139,13 @@
   </section>
 
   <!-- Events Section -->
-  <section class="p-4">
+  <section class="p-2">
     <div class="max-w-screen-2xl mx-auto">
       <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6" style="font-family: 'Gridlite PE', monospace;">
         Ивенты
       </h2>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
         <% @events.each do |event| %>
           <%= render "shared/event_card", event: event %>
         <% end %>
@@ -154,7 +154,7 @@
   </section>
 
   <!-- Footer / Newsletter Section -->
-  <footer class="bg-gray-200 border-t border-gray-800 p-4">
+  <footer class="bg-gray-200 border-t border-gray-800 p-2">
     <div class="max-w-screen-2xl mx-auto py-12">
       <!-- Large Newsletter Heading -->
       <div class="text-center mb-8">
@@ -165,7 +165,7 @@
 
       <!-- Newsletter Form -->
       <div class="max-w-2xl mx-auto">
-        <form class="flex flex-col md:flex-row gap-4">
+        <form class="flex flex-col md:flex-row gap-2">
           <input 
             type="email" 
             placeholder="Enter your email address" 
@@ -185,7 +185,7 @@
 
       <!-- Additional Footer Info -->
       <div class="mt-12 pt-8 border-t border-gray-800">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-600">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-2 text-sm text-gray-600">
           <div class="flex items-center gap-2">
             <i class="ri-group-line"></i>
             <span>+844 Designers Joined</span>
