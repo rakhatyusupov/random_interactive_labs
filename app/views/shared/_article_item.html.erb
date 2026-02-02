@@ -1,0 +1,19 @@
+<%# locals: (article:, index:) %>
+
+<div 
+  class="p-3 border border-gray-800 bg-white cursor-pointer hover:bg-gray-100 transition-colors"
+  data-article-preview-target="item"
+  data-action="click->article-preview#select"
+  data-article-id="<%= article.id %>"
+  data-article-title="<%= article.title %>"
+  data-article-image="<%= article.cover_image.attached? ? url_for(article.cover_image.variant(resize_to_limit: [1200, 800])) : '' %>"
+  data-article-description="<%= strip_tags(article.body.to_s).truncate(200) if article.body.present? %>"
+  data-article-date="<%= article.published_at&.strftime('%d/%m/%Y') || article.created_at.strftime('%d/%m/%Y') %>"
+  data-article-author="<%= article.user.username.upcase %>"
+  data-article-tag="<%= article.tags.first&.name&.upcase || '' %>"
+  data-article-url="<%= article_path(article) %>">
+  
+  <div class="text-gray-800 font-medium">
+    <%= article.title %>
+  </div>
+</div>

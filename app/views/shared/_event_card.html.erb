@@ -1,0 +1,58 @@
+<%# locals: (event:) %>
+
+<article class="border border-gray-800 bg-white">
+  <!-- Event Image -->
+  <div class="relative">
+    <% if event.respond_to?(:cover_image) && event.cover_image.attached? %>
+      <%= image_tag event.cover_image.variant(resize_to_limit: [800, 600]), 
+                    class: "w-full h-56 object-cover", 
+                    alt: event.title %>
+    <% elsif event.is_a?(Hash) && event[:image] %>
+      <%= image_tag event[:image], class: "w-full h-56 object-cover", alt: event[:title] %>
+    <% else %>
+      <div class="w-full h-56 bg-gray-300 flex items-center justify-center">
+        <i class="ri-calendar-event-line text-6xl text-gray-500"></i>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Event Content -->
+  <div class="p-4">
+    <!-- Event Title -->
+    <h3 class="text-xl font-bold text-gray-800 mb-2">
+      <%= event.is_a?(Hash) ? event[:title] : event.title %>
+    </h3>
+
+    <!-- Event Description -->
+    <p class="text-gray-700 text-sm mb-4 line-clamp-2">
+      <%= event.is_a?(Hash) ? event[:description] : (event.respond_to?(:description) ? event.description : '') %>
+    </p>
+
+    <!-- Event Metadata -->
+    <div class="flex flex-wrap items-center gap-3 text-xs text-gray-600 mb-4">
+      <!-- Attendees -->
+      <div class="flex items-center gap-1">
+        <i class="ri-user-3-line"></i>
+        <span><%= event.is_a?(Hash) ? event[:attendees] : '300' %> Attendees</span>
+      </div>
+
+      <!-- Location -->
+      <div class="flex items-center gap-1">
+        <i class="ri-map-pin-line"></i>
+        <span><%= event.is_a?(Hash) ? event[:location] : 'Tech Hub Arena, Austin' %></span>
+      </div>
+
+      <!-- Date -->
+      <div class="flex items-center gap-1">
+        <i class="ri-calendar-line"></i>
+        <span><%= event.is_a?(Hash) ? event[:date] : 'August 10, 2025' %></span>
+      </div>
+    </div>
+
+    <!-- CTA Button -->
+    <% event_url = event.is_a?(Hash) ? (event[:url] || '#') : '#' %>
+    <%= link_to event_url, class: "block w-full bg-gray-900 text-white text-center py-2 px-4 border border-gray-800 rounded-none hover:bg-gray-700 transition-colors font-medium text-sm" do %>
+      Get your ticket
+    <% end %>
+  </div>
+</article>

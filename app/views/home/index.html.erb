@@ -1,0 +1,198 @@
+<%= render "shared/nav" %>
+
+<main class="bg-gray-100 min-h-screen">
+  <!-- Header Controls -->
+  <section class="bg-gray-200 border-b border-gray-800 p-4">
+    <div class="max-w-screen-2xl mx-auto flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
+      <!-- Search Bar -->
+      <div class="flex-1 max-w-2xl">
+        <div class="relative">
+          <input 
+            type="text" 
+            placeholder="Search for anything" 
+            class="w-full px-4 py-2 pl-10 bg-white border border-gray-800 rounded-none text-gray-800 placeholder-gray-500 focus:outline-none focus:border-gray-900"
+          />
+          <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-600"></i>
+        </div>
+      </div>
+
+      <!-- Filter & Sort Buttons -->
+      <div class="flex gap-2">
+        <button class="px-4 py-2 bg-white border border-gray-800 rounded-none text-gray-800 hover:bg-gray-900 hover:text-white transition-colors text-sm font-medium flex items-center gap-2">
+          <i class="ri-filter-line"></i>
+          <span>Filter</span>
+        </button>
+        <button class="px-4 py-2 bg-white border border-gray-800 rounded-none text-gray-800 hover:bg-gray-900 hover:text-white transition-colors text-sm font-medium flex items-center gap-2">
+          <i class="ri-sort-desc"></i>
+          <span>Sort</span>
+        </button>
+        
+        <!-- Layout Toggle -->
+        <div class="flex border border-gray-800 rounded-none overflow-hidden">
+          <button 
+            data-layout-btn="list"
+            data-action="click->layout#toggleList"
+            class="px-3 py-2 bg-gray-900 text-white transition-colors">
+            <i class="ri-list-unordered"></i>
+          </button>
+          <button 
+            data-layout-btn="grid"
+            data-action="click->layout#toggleGrid"
+            class="px-3 py-2 bg-white text-gray-800 border-l border-gray-800 transition-colors">
+            <i class="ri-layout-grid-line"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cases Section -->
+  <section class="p-4" data-controller="layout">
+    <div class="max-w-screen-2xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6" style="font-family: 'Gridlite PE', monospace;">
+        RANDOM_RESEARCH_STUDY
+      </h2>
+
+      <div class="flex flex-col gap-4" data-layout-target="container">
+        <% @cases.each do |article| %>
+          <%= render "shared/case_card", article: article, mode: :list %>
+        <% end %>
+      </div>
+
+      <!-- Pagination -->
+      <div class="mt-8 flex items-center justify-center gap-2">
+        <button class="px-3 py-2 bg-white border border-gray-800 rounded-none text-gray-800 hover:bg-gray-900 hover:text-white transition-colors text-sm font-medium">
+          Previous
+        </button>
+        <% (1..23).each do |page| %>
+          <% if page <= 4 || page == 21 || page == 22 || page == 23 %>
+            <button class="px-3 py-2 <%= page == 2 ? 'bg-gray-900 text-white' : 'bg-white text-gray-800' %> border border-gray-800 rounded-none hover:bg-gray-900 hover:text-white transition-colors text-sm font-medium">
+              <%= page %>
+            </button>
+          <% elsif page == 5 %>
+            <span class="px-2 text-gray-600">...</span>
+          <% end %>
+        <% end %>
+        <button class="px-3 py-2 bg-white border border-gray-800 rounded-none text-gray-800 hover:bg-gray-900 hover:text-white transition-colors text-sm font-medium">
+          Next
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Articles Section -->
+  <section class="p-4 bg-gray-200 border-y border-gray-800" data-controller="article-preview">
+    <div class="max-w-screen-2xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6" style="font-family: 'Gridlite PE', monospace;">
+        Статьи
+      </h2>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <!-- Article List (Left) -->
+        <div class="lg:col-span-1 flex flex-col gap-0 border border-gray-800 bg-white overflow-hidden">
+          <% @articles.each_with_index do |article, index| %>
+            <%= render "shared/article_item", article: article, index: index %>
+          <% end %>
+        </div>
+
+        <!-- Article Preview (Right) -->
+        <div class="lg:col-span-2 border border-gray-800 bg-white p-6" data-article-preview-target="preview">
+          <!-- Preview Image -->
+          <div class="mb-6">
+            <img 
+              src="" 
+              alt="Article preview" 
+              class="w-full h-96 object-cover hidden"
+              data-article-preview-target="image"
+            />
+            <div class="w-full h-96 bg-gray-300 flex items-center justify-center" data-article-preview-target="placeholder">
+              <i class="ri-article-line text-6xl text-gray-500"></i>
+            </div>
+          </div>
+
+          <!-- Preview Title -->
+          <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4" data-article-preview-target="title">
+            Select an article to preview
+          </h3>
+
+          <!-- Preview Description -->
+          <p class="text-gray-700 mb-6 leading-relaxed" data-article-preview-target="description">
+            Click on an article from the list to see its details here.
+          </p>
+
+          <!-- Preview Metadata -->
+          <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600 border-t border-gray-300 pt-4 mb-6" data-article-preview-target="metadata">
+            <!-- Metadata will be injected here -->
+          </div>
+
+          <!-- Preview Link -->
+          <a 
+            href="#" 
+            class="inline-block bg-gray-900 text-white px-6 py-3 border border-gray-800 rounded-none hover:bg-gray-700 transition-colors font-medium"
+            data-article-preview-target="link">
+            Read Full Article
+            <i class="ri-arrow-right-line ml-2"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Events Section -->
+  <section class="p-4">
+    <div class="max-w-screen-2xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6" style="font-family: 'Gridlite PE', monospace;">
+        Ивенты
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <% @events.each do |event| %>
+          <%= render "shared/event_card", event: event %>
+        <% end %>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer / Newsletter Section -->
+  <footer class="bg-gray-200 border-t border-gray-800 p-4">
+    <div class="max-w-screen-2xl mx-auto py-12">
+      <!-- Large Newsletter Heading -->
+      <div class="text-center mb-8">
+        <h2 class="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-800 mb-4" style="font-family: 'Gridlite PE', monospace; line-height: 1.1;">
+          SUBSCRIBE TO OUR<br>NEWSLETTER
+        </h2>
+      </div>
+
+      <!-- Newsletter Form -->
+      <div class="max-w-2xl mx-auto">
+        <form class="flex flex-col md:flex-row gap-4">
+          <input 
+            type="email" 
+            placeholder="Enter your email address" 
+            class="flex-1 px-4 py-3 bg-white border border-gray-800 rounded-none text-gray-800 placeholder-gray-500 focus:outline-none focus:border-gray-900"
+            required
+          />
+          <button 
+            type="submit" 
+            class="px-8 py-3 bg-gray-900 text-white border border-gray-800 rounded-none hover:bg-gray-700 transition-colors font-medium whitespace-nowrap">
+            Subscribe
+          </button>
+        </form>
+        <p class="text-xs text-gray-600 mt-4 text-center">
+          Agree to <a href="#" class="underline hover:text-gray-800">Terms and Conditions</a>
+        </p>
+      </div>
+
+      <!-- Additional Footer Info -->
+      <div class="mt-12 pt-8 border-t border-gray-800">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-600">
+          <div class="flex items-center gap-2">
+            <i class="ri-group-line"></i>
+            <span>+844 Designers Joined</span>
+          </div>
+          <p>&copy; <%= Time.current.year %> RNDMLAB. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+</main>

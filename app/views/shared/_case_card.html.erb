@@ -1,0 +1,58 @@
+<%# locals: (article:, mode: :grid) %>
+
+<% mode ||= :grid %>
+
+<article class="border border-gray-800 bg-white <%= mode == :list ? 'flex flex-col md:flex-row' : '' %>" data-case-card>
+  <!-- Image -->
+  <div class="<%= mode == :list ? 'md:w-1/3 flex-shrink-0' : 'w-full' %>">
+    <% if article.cover_image.attached? %>
+      <%= link_to article_path(article), class: "block" do %>
+        <%= image_tag article.cover_image.variant(resize_to_limit: [800, 600]), 
+                      class: "w-full #{mode == :list ? 'h-48 md:h-full' : 'h-64'} object-cover", 
+                      alt: article.title %>
+      <% end %>
+    <% else %>
+      <%= link_to article_path(article), class: "block bg-gray-300 #{mode == :list ? 'h-48 md:h-full' : 'h-64'} flex items-center justify-center" do %>
+        <i class="ri-image-line text-6xl text-gray-500"></i>
+      <% end %>
+    <% end %>
+  </div>
+
+  <!-- Content -->
+  <div class="p-4 <%= mode == :list ? 'flex-1' : '' %>">
+    <!-- Title -->
+    <h3 class="text-xl md:text-2xl font-bold text-gray-800 mb-3 hover:text-gray-600 transition-colors">
+      <%= link_to article.title, article_path(article), class: "hover:text-gray-600" %>
+    </h3>
+
+    <!-- Description (for list mode) -->
+    <% if mode == :list && article.body.present? %>
+      <div class="text-gray-700 mb-4 line-clamp-3">
+        <%= truncate(strip_tags(article.body.to_s), length: 250) %>
+      </div>
+    <% end %>
+
+    <!-- Metadata -->
+    <div class="flex flex-wrap items-center gap-3 text-sm text-gray-600 border-t border-gray-300 pt-3">
+      <!-- Date -->
+      <div class="flex items-center gap-1">
+        <i class="ri-calendar-line"></i>
+        <span><%= article.published_at&.strftime("%d/%m/%Y") || article.created_at.strftime("%d/%m/%Y") %></span>
+      </div>
+
+      <!-- Author -->
+      <div class="flex items-center gap-1">
+        <i class="ri-user-line"></i>
+        <%= link_to article.user.username.upcase, profile_path(article.user.username), class: "hover:text-gray-800" %>
+      </div>
+
+      <!-- Tags -->
+      <% if article.tags.any? %>
+        <div class="flex items-center gap-1">
+          <i class="ri-price-tag-3-line"></i>
+          <span><%= article.tags.first.name.upcase %></span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</article>
