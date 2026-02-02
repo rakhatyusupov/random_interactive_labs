@@ -29,11 +29,11 @@ export default class extends Controller {
     // Remove active state from all items
     this.itemTargets.forEach((i) => {
       i.classList.remove("bg-gray-200", "border-l-4", "border-l-gray-900");
-      i.classList.add("bg-white");
+      i.classList.add("bg-gray-100");
     });
 
     // Add active state to selected item
-    item.classList.remove("bg-white");
+    item.classList.remove("bg-gray-100");
     item.classList.add("bg-gray-200", "border-l-4", "border-l-gray-900");
 
     // Update preview content

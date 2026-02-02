@@ -1,8 +1,17 @@
 <%= render "shared/nav" %>
 
+<!-- Decorative banner between nav and search -->
+<div class="h-fit p-2 bg-cover bg-center border border-gray-800" style="background-image: url(<%= asset_path 'cover.jpg' %>);">
+  <div class="max-w-screen-2xl mx-auto ">
+    <img src="<%= asset_path 'RANDOM_INTERACTIVE.svg' %>" alt="Decorative interactive" class="mx-auto" />
+  </div>
+</div>
+
+<div class="p-2"></div>
+
 <main class="bg-gray-100 min-h-screen">
   <!-- Header Controls -->
-  <section class="bg-gray-200 border-b border-gray-800 p-2">
+  <div >
     <div class="max-w-screen-2xl mx-auto flex flex-col md:flex-row gap-2 md:items-center md:justify-between">
       <!-- Search Bar -->
       <div class="flex-1 max-w-2xl">
@@ -10,7 +19,7 @@
           <input 
             type="text" 
             placeholder="Search for anything" 
-            class="w-full px-4 py-2 pl-10 bg-white border border-gray-800 rounded-none text-gray-800 placeholder-gray-500 focus:outline-none focus:border-gray-900"
+            class="w-full px-4 py-2 pl-10 bg-gray-100 border border-gray-800 rounded-none text-gray-800 placeholder-gray-500 focus:outline-none focus:border-gray-900"
           />
           <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-600"></i>
         </div>
@@ -18,11 +27,11 @@
 
       <!-- Filter & Sort Buttons -->
       <div class="flex gap-2">
-        <button class="px-4 py-2 bg-white border border-gray-800 rounded-none text-gray-800 hover:bg-gray-900 hover:text-white transition-colors text-sm font-medium flex items-center gap-2">
+        <button class="px-4 py-2 bg-gray-100 border border-gray-800 rounded-none text-gray-800 hover:bg-gray-900 hover:text-white transition-colors text-sm font-medium flex items-center gap-2">
           <i class="ri-filter-line"></i>
           <span>Filter</span>
         </button>
-        <button class="px-4 py-2 bg-white border border-gray-800 rounded-none text-gray-800 hover:bg-gray-900 hover:text-white transition-colors text-sm font-medium flex items-center gap-2">
+        <button class="px-4 py-2 bg-gray-100 border border-gray-800 rounded-none text-gray-800 hover:bg-gray-900 hover:text-white transition-colors text-sm font-medium flex items-center gap-2">
           <i class="ri-sort-desc"></i>
           <span>Sort</span>
         </button>
@@ -38,23 +47,19 @@
           <button 
             data-layout-btn="list"
             data-action="click->layout#toggleList"
-            class="px-3 py-2 bg-white text-gray-800 border-l border-gray-800 transition-colors">
+            class="px-3 py-2 bg-gray-100 text-gray-800 border-l border-gray-800 transition-colors">
             <i class="ri-list-unordered"></i>
           </button>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
   <!-- Cases Section -->
   <section class="p-4" data-controller="layout">
     <div class="max-w-screen-2xl mx-auto">
-      <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6" style="font-family: 'Gridlite PE', monospace;">
-        RANDOM_RESEARCH_STUDY
-      </h2>
-
       <!-- Grid/List Container -->
-      <div class="grid grid-cols-8 gap-4" data-layout-target="container">
+      <div class="grid grid-cols-8 gap-0" data-layout-target="container">
         <% @items.each do |item| %>
           <%= render "shared/grid_item", item: item %>
         <% end %>
@@ -62,19 +67,19 @@
 
       <!-- Pagination -->
       <div class="mt-8 flex items-center justify-center gap-2">
-        <button class="px-3 py-2 bg-white border border-gray-800 rounded-none text-gray-800 hover:bg-gray-900 hover:text-white transition-colors text-sm font-medium">
+        <button class="px-3 py-2 bg-gray-100 border border-gray-800 rounded-none text-gray-800 hover:bg-gray-900 hover:text-white transition-colors text-sm font-medium">
           Previous
         </button>
         <% (1..23).each do |page| %>
           <% if page <= 4 || page == 21 || page == 22 || page == 23 %>
-            <button class="px-3 py-2 <%= page == 2 ? 'bg-gray-900 text-white' : 'bg-white text-gray-800' %> border border-gray-800 rounded-none hover:bg-gray-900 hover:text-white transition-colors text-sm font-medium">
+            <button class="px-3 py-2 <%= page == 2 ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-800' %> border border-gray-800 rounded-none hover:bg-gray-900 hover:text-white transition-colors text-sm font-medium">
               <%= page %>
             </button>
           <% elsif page == 5 %>
             <span class="px-2 text-gray-600">...</span>
           <% end %>
         <% end %>
-        <button class="px-3 py-2 bg-white border border-gray-800 rounded-none text-gray-800 hover:bg-gray-900 hover:text-white transition-colors text-sm font-medium">
+        <button class="px-3 py-2 bg-gray-100 border border-gray-800 rounded-none text-gray-800 hover:bg-gray-900 hover:text-white transition-colors text-sm font-medium">
           Next
         </button>
       </div>
@@ -90,14 +95,14 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-2">
         <!-- Article List (Left) -->
-        <div class="lg:col-span-1 flex flex-col gap-0 border border-gray-800 bg-white overflow-hidden">
+        <div class="lg:col-span-1 flex flex-col gap-0 border border-gray-800 bg-gray-100 overflow-hidden">
           <% @articles.each_with_index do |article, index| %>
             <%= render "shared/article_item", article: article, index: index %>
           <% end %>
         </div>
 
         <!-- Article Preview (Right) -->
-        <div class="lg:col-span-2 border border-gray-800 bg-white p-6" data-article-preview-target="preview">
+        <div class="lg:col-span-2 border border-gray-800 bg-gray-100 p-6" data-article-preview-target="preview">
           <!-- Preview Image -->
           <div class="mb-6">
             <img 
@@ -170,7 +175,7 @@
           <input 
             type="email" 
             placeholder="Enter your email address" 
-            class="flex-1 px-4 py-3 bg-white border border-gray-800 rounded-none text-gray-800 placeholder-gray-500 focus:outline-none focus:border-gray-900"
+            class="flex-1 px-4 py-3 bg-gray-100 border border-gray-800 rounded-none text-gray-800 placeholder-gray-500 focus:outline-none focus:border-gray-900"
             required
           />
           <button 

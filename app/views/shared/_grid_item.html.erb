@@ -11,7 +11,7 @@
   image = item.cover_image if item.respond_to?(:cover_image) && item.cover_image.attached?
 %>
 
-<article class="border border-gray-800 bg-white col-span-<%= span %>" data-grid-item data-span="<%= span %>">
+<article class="border border-gray-800 bg-gray-100 col-span-<%= span %>" data-grid-item data-span="<%= span %>">
   <!-- Image -->
   <div class="w-full">
     <% if image %>

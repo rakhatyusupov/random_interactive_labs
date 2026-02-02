@@ -83,14 +83,14 @@ export default class extends Controller {
     if (gridBtn && listBtn) {
       if (activeMode === 'grid') {
         gridBtn.classList.add('bg-gray-900', 'text-white')
-        gridBtn.classList.remove('bg-white', 'text-gray-800')
+        gridBtn.classList.remove('bg-gray-100', 'text-gray-800')
         listBtn.classList.remove('bg-gray-900', 'text-white')
-        listBtn.classList.add('bg-white', 'text-gray-800')
+        listBtn.classList.add('bg-gray-100', 'text-gray-800')
       } else {
         listBtn.classList.add('bg-gray-900', 'text-white')
-        listBtn.classList.remove('bg-white', 'text-gray-800')
+        listBtn.classList.remove('bg-gray-100', 'text-gray-800')
         gridBtn.classList.remove('bg-gray-900', 'text-white')
-        gridBtn.classList.add('bg-white', 'text-gray-800')
+        gridBtn.classList.add('bg-gray-100', 'text-gray-800')
       }
     }
   }
@@ -209,14 +209,14 @@ export default class extends Controller {
     if (gridBtn && listBtn) {
       if (activeMode === "grid") {
         gridBtn.classList.add("bg-gray-900", "text-white");
-        gridBtn.classList.remove("bg-white", "text-gray-800");
+        gridBtn.classList.remove("bg-gray-100", "text-gray-800");
         listBtn.classList.remove("bg-gray-900", "text-white");
-        listBtn.classList.add("bg-white", "text-gray-800");
+        listBtn.classList.add("bg-gray-100", "text-gray-800");
       } else {
         listBtn.classList.add("bg-gray-900", "text-white");
-        listBtn.classList.remove("bg-white", "text-gray-800");
+        listBtn.classList.remove("bg-gray-100", "text-gray-800");
         gridBtn.classList.remove("bg-gray-900", "text-white");
-        gridBtn.classList.add("bg-white", "text-gray-800");
+        gridBtn.classList.add("bg-gray-100", "text-gray-800");
       }
     }
   }
