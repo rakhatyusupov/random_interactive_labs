@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: minio
+    runtime: image
+    image:
+      url: docker.io/minio/minio:latest
+    healthCheckPath: /minio/health/live
+    dockerCommand: minio server /data --address $HOST:$PORT
+    autoDeploy: false
+    disk:
+      name: minio-data
+      mountPath: /data
+      sizeGB: 10
+    envVars:
+      - key: MINIO_ROOT_USER
+        generateValue: true
+      - key: MINIO_ROOT_PASSWORD
+        generateValue: true
+      - key: HOST
+        value: "0.0.0.0"
+      - key: PORT
+        value: "9000"
