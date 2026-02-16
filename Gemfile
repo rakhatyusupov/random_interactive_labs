@@ -50,7 +50,7 @@ gem "devise"
 # gem "actiontext" # Already included in Rails 8
 
 # Tagging system for articles and collections
-gem "gutentag", "~> 2.6"
+gem "gutentag", "~> 3.0"
 
 # Authorization
 gem "pundit"
