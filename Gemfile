@@ -16,6 +16,7 @@ gem "turbo-rails"
 gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
+gem "aws-sdk-s3", require: false
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
@@ -80,3 +81,7 @@ group :test do
 end
 
 gem "tailwindcss-rails", "~> 4.4"
+
+group :production do
+  gem "pg", "~> 1.5"
+end
